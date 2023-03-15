@@ -32,7 +32,7 @@ directly, such as:
 
 * `$ g++ src/sieve.cc -O2 -o sieve -std=c++17`
 * `$ clang++ src/sieve.cc -O2 -o sieve -std=c++17`
-* `> cl.exe /EHsc /O2 src/sieve.cc /Fesieve.exe`
+* `> cl.exe /EHsc /O2 /std:c++20 src/sieve.cc /Fesieve.exe`
 
 Before feeding it into a decompiler, please strip the binary first. MSVC
 will do this automatically for a release build: Linux and MacOS X users
