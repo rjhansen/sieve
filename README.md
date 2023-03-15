@@ -39,13 +39,15 @@ will do this automatically for a release build: Linux and MacOS X users
 should run the `strip` program on the `sieve` executable 
 (`$ strip ./sieve`).
 
-To get Assembly output, build it directly using the `-S` flag (on Clang and
-GNU), such as:
+To get Assembly output, build it using the `-S` flag (on Clang and
+GNU) or the `/FA` switch (on MSVC), such as:
 
 * `$ g++ src/sieve.cc -O2 -S -o sieve.S -std=c++17`
 * `$ clang++ src/sieve.cc -O2 -S -o sieve.S -std=c++17`
+* `> cl.exe /EHsc /O2 /std:c++20 /FA src/sieve.cc /Fesieve.exe`
 
-Then review the Assembly file `sieve.S` to see what your compiler did.
+Then review the Assembly file `sieve.S` (or `sieve.asm` under MSVC) to see
+what your compiler did.
 
 ## Who wrote it?
 
