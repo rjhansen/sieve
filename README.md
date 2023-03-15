@@ -25,6 +25,28 @@ support, strip the executable, and then feed it into your decompiler of
 choice.  You'll be amazed at what a simple two-function program can 
 explode into.
 
+## Building it
+
+`$ cmake . -DCMAKE_BUILD_TYPE=Release && make`.  You could also build it 
+directly, such as:
+
+* `$ g++ src/sieve.cc -O2 -o sieve -std=c++17`
+* `$ clang++ src/sieve.cc -O2 -o sieve -std=c++17`
+* `> cl.exe /EHsc /O2 src/sieve.cc /Fesieve.exe`
+
+Before feeding it into a decompiler, please strip the binary first. MSVC
+will do this automatically for a release build: Linux and MacOS X users
+should run the `strip` program on the `sieve` executable 
+(`$ strip ./sieve`).
+
+To get Assembly output, build it directly using the `-S` flag (on Clang and
+GNU), such as:
+
+* `$ g++ src/sieve.cc -O2 -S -o sieve.S -std=c++17`
+* `$ clang++ src/sieve.cc -O2 -S -o sieve.S -std=c++17`
+
+Then review the Assembly file `sieve.S` to see what your compiler did.
+
 ## Who wrote it?
 
 I did.  Rob Hansen, `rob@hansen.engineering`.
