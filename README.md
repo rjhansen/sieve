@@ -27,11 +27,12 @@ explode into.
 
 ## Building it
 
-`$ cmake . -DCMAKE_BUILD_TYPE=Release && make`.  You could also build it 
-directly, such as:
+`$ cmake . -DCMAKE_BUILD_TYPE=Release`.  At that point you can either
+`make` it (on Linux or MacOS X), or open up the resulting MSVC solution
+file in MSVC.  You could also build it directly, such as:
 
-* `$ g++ src/sieve.cc -O2 -o sieve -std=c++17`
-* `$ clang++ src/sieve.cc -O2 -o sieve -std=c++17`
+* `$ g++ src/sieve.cc -O2 -o sieve -std=c++20`
+* `$ clang++ src/sieve.cc -O2 -o sieve -std=c++20`
 * `> cl.exe /EHsc /O2 /std:c++20 src/sieve.cc /Fesieve.exe`
 
 Before feeding it into a decompiler, please strip the binary first. MSVC
@@ -42,8 +43,8 @@ should run the `strip` program on the `sieve` executable
 To get Assembly output, build it using the `-S` flag (on Clang and
 GNU) or the `/FA` switch (on MSVC), such as:
 
-* `$ g++ src/sieve.cc -O2 -S -o sieve.S -std=c++17`
-* `$ clang++ src/sieve.cc -O2 -S -o sieve.S -std=c++17`
+* `$ g++ src/sieve.cc -O2 -S -o sieve.S -std=c++20`
+* `$ clang++ src/sieve.cc -O2 -S -o sieve.S -std=c++20`
 * `> cl.exe /EHsc /O2 /std:c++20 /FA src/sieve.cc /Fesieve.exe`
 
 Then review the Assembly file `sieve.S` (or `sieve.asm` under MSVC) to see
