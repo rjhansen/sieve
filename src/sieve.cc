@@ -92,15 +92,12 @@ int main(int argc, char *argv[]) {
       ;
 
     // ... and the sieve is straightforward.
-    for (const auto &candidate : candidates)
-      if (candidate <= stop_at)
-        candidates.erase(remove_if(candidates.begin(), candidates.end(),
-                                   [&candidate](const auto &value) {
-                                     return (0 == (value % candidate) &&
-                                             (value > candidate));
-                                   }),
-                         candidates.end());
-        else break;
+    for (auto iter = candidates.begin(); *iter <= stop_at; ++iter)
+      candidates.erase(remove_if(iter + 1, candidates.end(),
+                                 [&iter](const auto &value) {
+                                   return 0 == (value % *iter);
+                                 }),
+                       candidates.end());
 
     // Render output.
     copy(candidates, ostream_iterator<decltype(candidates.at(0))>(cout, " "));
