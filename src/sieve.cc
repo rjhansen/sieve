@@ -27,6 +27,7 @@
 #include <charconv>
 #include <cmath>
 #include <cstdint>
+#include <cstring>
 #include <exception>
 #include <iostream>
 #include <iterator>
@@ -36,12 +37,12 @@
 using std::bad_alloc;
 using std::cerr;
 using std::cout;
+using std::decay;
 using std::exception;
 using std::from_chars;
 using std::logic_error;
 using std::ostream_iterator;
 using std::remove_if;
-using std::string_view;
 using std::tuple;
 using std::vector;
 using std::errc::invalid_argument;
@@ -53,8 +54,7 @@ auto get_range(int argc, char *argv[]) {
     throw logic_error("insufficient args");
 
   int32_t parameter{0};
-  const string_view arg{argv[1]};
-  auto [_, ec]{from_chars(arg.data(), arg.data() + arg.size(), parameter)};
+  auto [_, ec]{from_chars(argv[1], argv[1] + strlen(argv[1]), parameter)};
 
   switch (ec) {
   case invalid_argument:
@@ -73,13 +73,11 @@ auto get_range(int argc, char *argv[]) {
 }
 
 int main(int argc, char *argv[]) {
-  const string_view program_name{argv[0]};
   try {
     // Allocate and initialize our working data.
     auto up_to{get_range(argc, argv)};
     auto stop_at{static_cast<int32_t>(ceil(sqrt(static_cast<double>(up_to))))};
-    vector<int32_t> candidates;
-    candidates.resize((up_to - 1) / 2 + 1, 0);
+    vector<int32_t> candidates((up_to - 1) / 2 + 1, 0);
     candidates.at(0) = 2;
 
     // Structured binding declarations married to std::tuples let us declare
@@ -87,9 +85,8 @@ int main(int argc, char *argv[]) {
     // this in production code I reserve the right to kill you.
     for (auto [iter, val] =
              tuple{candidates.begin() + 1,
-                   typename std::decay<decltype(candidates.at(0))>::type{1}};
-         iter != candidates.end(); *iter++ = (val += 2))
-      ;
+                   decay<decltype(candidates.at(0))>::type{1}};
+         iter != candidates.end(); *iter++ = (val += 2));
 
     // ... and the sieve is straightforward.
     for (auto iter = candidates.begin(); *iter <= stop_at; ++iter)
@@ -103,9 +100,8 @@ int main(int argc, char *argv[]) {
     copy(candidates, ostream_iterator<decltype(candidates.at(0))>(cout, " "));
     cout << "\n";
   }
-
   catch (logic_error &) {
-    cerr << "Usage: " << program_name << " [upto]\n\n"
+    cerr << "Usage: " << argv[0] << " [upto]\n\n"
          << "Upto must be between two and one billion.\n";
     return -1;
   } catch (bad_alloc &) {
